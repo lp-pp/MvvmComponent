@@ -1,0 +1,74 @@
+apply plugin: 'com.android.library'
+
+def config = rootProject.ext.android
+def libraries = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+    
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    sourceSets {
+        main {
+//            jniLibs.srcDirs = ['libs']
+            if (isBuildModule.toBoolean()) {
+            } else {
+                resources {
+                    //正式版本时，排除debug文件夹下所有调试文件
+                    exclude 'src/debug/*'
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "base_"
+
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility config.sourceCompatibility
+        targetCompatibility config.targetCompatibility
+    }
+}
+
+dependencies {
+    api libraries["appcompat"]
+    api libraries["lifecycle_extensions"]
+    api libraries["recyclerview"]
+    api libraries["constraintlayout"]
+    api libraries["cardview"]
+    api libraries["material"]
+    api libraries["navigation-fragment"]
+    api libraries["navigation-ui:"]
+    api libraries["loadsir"]
+    api libraries["gson"]
+    api libraries["rxjava3"]
+    api libraries["rxpermissions"]
+    api libraries["mmkv"]
+    api libraries["BaseRecyclerViewAdapterHelper"]
+    api libraries["immersionbar"]
+    api libraries["glide"]
+
+    //royole libs
+    api libraries["common_util"]
+    api libraries["common_log"]
+    /* waterOS widget */
+    api libraries["widget_sdk"]
+}

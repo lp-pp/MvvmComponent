@@ -1,0 +1,137 @@
+//add by lp 2020/10/10 17:38
+ext {
+    //android 开发版本
+    android = [
+            compileSdkVersion : 29,
+            buildToolsVersion : '29.0.3',
+            applicationId     : 'com.lp.mvvmcomponent',
+            minSdkVersion     : 26,
+            targetSdkVersion  : 29,
+            versionCode       : 1,
+            versionName       : '1.0.0',
+            sourceCompatibility	: JavaVersion.VERSION_1_8,
+            targetCompatibility	: JavaVersion.VERSION_1_8,
+    ]
+
+    //version 版本控制
+    version = [
+            junitVersion                         : '4.13',
+            junitExtVersion                      : '1.1.2',
+            runnerVersion                        : '1.3.0',
+            espressoVersion                      : '3.3.0',
+            robolectricVersion                   : '4.4',
+            butterknifeVersion                   : '10.2.3',
+            multidexVersion                      : '2.0.1',
+            leakcanaryVersion                    : '2.4',
+            koomVersion                          : '1.0.5',
+            stethoVersion                        : '1.5.1',
+            dagger2Version                       : '2.29.1',
+            rxlifecycleVersion                   : '4.0.0',
+            rxAndroidVersion                     : '3.0.0',
+            rxJavaVersion                        : '3.0.6',
+            retrofitVersion                      : '2.9.0',
+            okhttpVersion                        : '4.9.0',
+            gsonVersion                          : '2.8.6',
+            fragmentationVersion                 : '1.0.2',
+            commonUtilVersion                    : '1.0.3',
+            commonLogVersion                     : '1.0.2',
+            roomVersion                          : '2.3.0-alpha02',
+            widgetsdkVersion                     : '1.0.0-alpha24',
+
+            //第三方框架配置版本号
+            loadsirVersion                       : '1.3.6',
+            rxpermissionsVersion                 : '0.12',
+            mmkvVersion                          : '1.0.23',
+            immersionbarVersion                  : '3.0.0',
+            glideVersion                         : '4.11.0',
+            glidecompilerVersion                 : '4.11.0',
+            arouterApiVersion                    : '1.5.0',
+            arouterCompilerVersion               : '1.2.2',
+            BaseRecyclerViewAdapterHelperVersion : '3.0.0-beta11',
+    ]
+
+    //依赖配置
+    dependencies = [
+            // androidx支持库配置
+            "appcompat"                     : 'androidx.appcompat:appcompat:1.2.0',
+            "annotations"                   : 'androidx.annotation:annotation:1.1.0',
+            "constraintlayout"             : 'androidx.constraintlayout:constraintlayout:2.0.2',
+            "exifinterface"                 : 'androidx.exifinterface:exifinterface:1.3.0-rc01',
+            "lifecycle_extensions"          : 'androidx.lifecycle:lifecycle-extensions:2.2.0',
+            "recyclerview"                  : 'androidx.recyclerview:recyclerview:1.1.0',
+            "cardview"                      : 'androidx.cardview:cardview:1.0.0',
+            "navigation-fragment"           : 'androidx.navigation:navigation-fragment:2.1.0',
+            "navigation-ui:"                : 'androidx.navigation:navigation-ui:2.1.0',
+            "material"                      : 'com.google.android.material:material:1.2.1',
+
+            // test
+            "junit"                         : "junit:junit:${version["junitVersion"]}",
+            "junit_ext"                     : "androidx.test.ext:junit:${version["junitExtVersion"]}",
+            "AndroidJUnitRunner"            : 'androidx.test.runner.AndroidJUnitRunner',
+            "runner"                        : "androidx.test:runner:${version["runnerVersion"]}",
+            "espresso_core"                 : "androidx.test.espresso:espresso-core:${version["espressoVersion"]}",
+            "robolectric"                   : "org.robolectric:robolectric:${version["robolectricVersion"]}",
+
+            // butterknife
+            "butterknife"                   : "com.jakewharton:butterknife:${version["butterknifeVersion"]}",
+            "butterknife_compiler"          : "com.jakewharton:butterknife-compiler:${version["butterknifeVersion"]}",
+
+            // multidex
+            "multidex"                      : "androidx.multidex:multidex:${version["multidexVersion"]}",
+
+            // debug
+            "leakcanary"                    : "com.squareup.leakcanary:leakcanary-android:${version["leakcanaryVersion"]}",
+            "koom"                          : "com.kwai.koom:java-oom:${version["koomVersion"]}",
+            "stetho"                        : "com.facebook.stetho:stetho:${version["stethoVersion"]}",
+            "stetho_okhttp"                 : "com.facebook.stetho:stetho-okhttp3:${version["stethoVersion"]}",
+
+            // dagger2
+            "dagger2"                       : "com.google.dagger:dagger:${version["dagger2Version"]}",
+            "dagger2_compiler"              : "com.google.dagger:dagger-compiler:${version["dagger2Version"]}",
+
+            // rx
+            "rxandroid3"                    : "io.reactivex.rxjava3:rxandroid:${version["rxAndroidVersion"]}",
+            "rxjava3"                       : "io.reactivex.rxjava3:rxjava:${version["rxJavaVersion"]}",
+            "rxlifecycle4"                  : "com.trello.rxlifecycle4:rxlifecycle:${version["rxlifecycleVersion"]}",
+            "rxlifecycle4_android"          : "com.trello.rxlifecycle4:rxlifecycle-android:${version["rxlifecycleVersion"]}",
+            "rxlifecycle4_components"       : "com.trello.rxlifecycle4:rxlifecycle-components:${version["rxlifecycleVersion"]}",
+            "rxlifecycle4_lifecycle"        : "com.trello.rxlifecycle4:rxlifecycle-android-lifecycle:${version["rxlifecycleVersion"]}",
+
+            // network
+            "retrofit2"                     : "com.squareup.retrofit2:retrofit:${version["retrofitVersion"]}",
+            "retrofit2_converter_gson"      : "com.squareup.retrofit2:converter-gson:${version["retrofitVersion"]}",
+            "retrofit2_adapter_rxjava3"     : "com.squareup.retrofit2:adapter-rxjava3:${version["retrofitVersion"]}",
+            "okhttp3"                       : "com.squareup.okhttp3:okhttp:${version["okhttpVersion"]}",
+            "okhttp3_logging_interceptor"   : "com.squareup.okhttp3:logging-interceptor:${version["okhttpVersion"]}",
+            "gson"                          : "com.google.code.gson:gson:${version["gsonVersion"]}",
+
+            // Fragment框架
+            "fragmentation"                 : "me.yokeyword:fragmentationx:${version["fragmentationVersion"]}",
+
+            // commonUtil
+            "common_util"                   : "com.royole.app:common-util-android:${version["commonUtilVersion"]}",
+
+            // commonLog
+            "common_log"                    : "com.royole.app:commonlog:${version["commonLogVersion"]}",
+
+            // room数据库
+            "room_runtime"                  : "androidx.room:room-runtime:${version["roomVersion"]}",
+            "room_compiler"                 : "androidx.room:room-compiler:${version["roomVersion"]}",
+            "room_rxjava3"                  : "androidx.room:room-rxjava3:${version["roomVersion"]}",
+            "room_testing"                  : "androidx.room:room-testing:${version["roomVersion"]}",
+
+            // waterOS widget
+            "widget_sdk"                    : "com.royole.widgetsdk:widget-sdk-zijin:${version["widgetsdkVersion"]}",
+
+            //第三方框架配置
+            "loadsir"                       : "com.kingja.loadsir:loadsir:${version["loadsirVersion"]}",
+            "rxpermissions"                 : "com.github.tbruyelle:rxpermissions:${version["rxpermissionsVersion"]}",
+            "mmkv"                          : "com.tencent:mmkv:${version["mmkvVersion"]}",
+            "immersionbar"                  : "com.gyf.immersionbar:immersionbar:${version["immersionbarVersion"]}",
+            "glide"                         : "com.github.bumptech.glide:glide:${version["glideVersion"]}",
+            "glide-compiler"                : "com.github.bumptech.glide:glide:compiler:${version["glidecompilerVersion"]}",
+            "arouter-api"                   : "com.alibaba:arouter-api:${version["arouterApiVersion"]}",
+            "arouter-compiler"              : "com.alibaba:arouter-compiler:${version["arouterCompilerVersion"]}",
+            "BaseRecyclerViewAdapterHelper" : "com.github.CymChad:BaseRecyclerViewAdapterHelper:${version["BaseRecyclerViewAdapterHelperVersion"]}",
+    ]
+}

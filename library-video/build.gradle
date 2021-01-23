@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+
+def config = rootProject.ext.android
+def libraries = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    sourceSets {
+        main {
+//            jniLibs.srcDirs = ['libs']
+            if (isBuildModule.toBoolean()) {
+            } else {
+                resources {
+                    //正式版本时，排除debug文件夹下所有调试文件
+                    exclude 'src/debug/*'
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "video_"
+
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility config.sourceCompatibility
+        targetCompatibility config.targetCompatibility
+    }
+}
+
+dependencies {
+    api libraries["recyclerview"]
+    api libraries["glide"]
+    annotationProcessor libraries["glide-compiler"]
+    //GSYVideoPlayer
+    api 'com.shuyu:gsyVideoPlayer-java:7.1.6'
+    //根据你的需求ijk模式的so
+    api 'com.shuyu:gsyVideoPlayer-armv7a:7.1.6'
+    api 'com.shuyu:gsyVideoPlayer-arm64:7.1.6'
+}

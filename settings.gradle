@@ -1,0 +1,13 @@
+include ':module-user'
+include ':module-player'
+include ':module-more'
+include ':module-community'
+include ':module-home'
+include ':module-main'
+include ':library-video'
+include ':library-servicemanager'
+include ':library-network'
+include ':library-common'
+include ':library-base'
+include ':app'
+rootProject.name = "MvvmComponent"

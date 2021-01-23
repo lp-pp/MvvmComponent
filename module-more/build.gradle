@@ -1,0 +1,28 @@
+apply from: "../module.build.gradle"
+
+def config = rootProject.ext.android
+def libraries = rootProject.ext.dependencies
+
+android {
+    defaultConfig {
+        if (isBuildModule.toBoolean()) {
+            applicationId "com.lp.more"
+        }
+    }
+    //统一资源前缀，规范资源引用
+    resourcePrefix "more_"
+}
+
+dependencies {
+    testImplementation libraries["junit"]
+    androidTestImplementation libraries["junit_ext"]
+    androidTestImplementation libraries["espresso_core"]
+
+    //组件中依赖阿里路由编译框架
+    annotationProcessor libraries["arouter-compiler"]
+    //组件中依赖Gilde图片处理框架
+    annotationProcessor libraries["glide-compiler"]
+
+    //组件依赖基础库
+    api project(':library-common')
+}

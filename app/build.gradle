@@ -1,0 +1,153 @@
+apply plugin: 'com.android.application'
+
+//************************************自定义配置***************************************//
+def config = rootProject.ext.android
+def libraries = rootProject.ext.dependencies
+
+//获取当前的git的commit id
+def static getGitCommitId() {
+    return "git rev-parse --short HEAD".execute().text.trim()
+}
+
+//获取Apk编译时间
+def static getBuildTime() {
+    return new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+//获取签名文件
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+//************************************Gradle配置**********************************//
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        applicationId config.applicationId
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+
+        testInstrumentationRunner libraries.AndroidJUnitRunner
+
+        ndk {
+            //设置支持的so库架构
+            abiFilters 'arm64-v8a', 'armeabi-v7a'
+        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [AROUTER_MODULE_NAME: project.getName()]
+            }
+        }
+    }
+
+    //配置签名文件
+    signingConfigs {
+        platformConfig {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.platformConfig
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            signingConfig signingConfigs.platformConfig
+        }
+    }
+
+    sourceSets {
+        main{
+            //jni库统一放在libs目录下
+//            jniLibs.srcDir = ['libs']
+            if (isBuildModule.toBoolean()){
+                //单独运行
+                manifest.srcFile 'src/main/alone/AndroidManifest.xml'
+            }
+            else {
+                //合并到宿主中
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+                resources{
+                    //正式版本时.剔除debug文件夹下的所有调式文件
+                    exclude 'src/debug/*'
+                }
+            }
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "app_"
+
+    compileOptions {
+        sourceCompatibility config.sourceCompatibility
+        targetCompatibility config.targetCompatibility
+    }
+
+    //打包APK配置
+    android.applicationVariants.all {
+        variant ->
+            //Apk名称
+            variant.outputs.all {
+                output ->
+                    def projectPrefix = "EyeVideo"
+                    def time = new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
+                    def buildType = variant.buildType.name
+                    def versionName = defaultConfig.versionName
+                    output.outputFileName = projectPrefix + "_" + buildType + "_V" + versionName + "_" + time + ".apk"
+            }
+
+            //获取当前的git的commit id
+            def gitCommitId = getGitCommitId()
+            buildConfigField "String", "Git_Commit_Id", "\"${gitCommitId}\""
+
+            //获取Apk编译时间
+            def buildTime = getBuildTime()
+            buildConfigField "String", "Apk_Build_Time", "\"${buildTime}\""
+    }
+}
+
+dependencies {
+    testImplementation libraries["junit"]
+    androidTestImplementation libraries["junit_ext"]
+    androidTestImplementation libraries["espresso_core"]
+
+    //组件中依赖阿里路由编译框架
+    annotationProcessor libraries["arouter-compiler"]
+    //组件中依赖Gilde图片处理框架
+    annotationProcessor libraries["glide-compiler"]
+
+    //配置内存检测工具leakcanary
+    debugImplementation libraries["leakcanary"]
+
+    //宿主项目中判断组件是否需要独立运行
+    if (isBuildModule.toBoolean()) {
+        //组件独立运行时，宿主项目直接依赖基础库，避免编译错误
+        implementation project(':library-base')
+    } else {
+        //主业务模块
+        implementation project(':module-main')
+//        //首页模块
+        implementation project(':module-home')
+//        //社区模块
+        implementation project(':module-community')
+//        //更多模块
+        implementation project(':module-more')
+//        //视频播放模块
+        implementation project(':module-player')
+//        //用户模块
+        implementation project(':module-user')
+    }
+}

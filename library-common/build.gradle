@@ -1,0 +1,66 @@
+apply plugin: 'com.android.library'
+
+def config = rootProject.ext.android
+def libraries = rootProject.ext.dependencies
+
+android {
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    sourceSets {
+        main {
+//            jniLibs.srcDirs = ['libs']
+            if (isBuildModule.toBoolean()) {
+            } else {
+                resources {
+                    //正式版本时，排除debug文件夹下所有调试文件
+                    exclude 'src/debug/*'
+                }
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    //统一资源前缀,规范资源引用
+    resourcePrefix "common_"
+
+    dataBinding {
+        enabled true
+    }
+
+    compileOptions {
+        sourceCompatibility config.sourceCompatibility
+        targetCompatibility config.targetCompatibility
+    }
+}
+
+dependencies {
+    api libraries["arouter-api"]
+    api 'com.scwang.smart:refresh-layout-kernel:2.0.0-alpha-1'
+    api 'com.scwang.smart:refresh-header-classics:2.0.0-alpha-1'
+    api 'com.scwang.smart:refresh-footer-classics:2.0.0-alpha-1'
+    api 'com.orhanobut:logger:2.2.0'
+    api 'org.jetbrains:annotations:15.0'
+    api 'com.blankj:utilcodex:1.26.0'
+    //banner
+    api 'com.github.zhpanvip:BannerViewPager:2.6.6'
+    api 'com.github.zhpanvip:viewpagerindicator:1.0.0'
+
+    api project(':library-base')
+    api project(':library-network')
+    api project(':library-servicemanager')
+}
